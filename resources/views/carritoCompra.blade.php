@@ -150,7 +150,7 @@
 }
 
 .btn-pay {
-    background: linear-gradient(45px, #ff6b6b, #ee5a24);
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
     border: none;
     color: white;
     padding: 15px 40px;
@@ -159,6 +159,7 @@
     font-size: 1.2rem;
     transition: all 0.3s ease;
     box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+    opacity: 1;
 }
 
 .btn-pay:hover {
@@ -166,6 +167,7 @@
     transform: translateY(-3px);
     box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
     color: white;
+    opacity: 1;
 }
 
 .btn-continue {
@@ -178,6 +180,7 @@
     text-decoration: none;
     transition: all 0.3s ease;
     display: inline-block;
+    opacity: 1;
 }
 
 .btn-continue:hover {
@@ -185,6 +188,7 @@
     transform: translateY(-2px);
     color: white;
     text-decoration: none;
+    opacity: 1;
 }
 
 .empty-cart {
