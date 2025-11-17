@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controlador Admin
+ * Gestiona el CRUD completo de productos (panel de administración)
+ */
+
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -10,9 +15,12 @@ class adminController extends Controller
 {
     // ----- MOSTRAR PRODUCTOS -----
 
-    // --- Mostrar todos los productos ---
+    /**
+     * Muestra todos los productos en el panel de administración
+     */
     public function mostrarProductos()
     {
+        // Obtiene todos los productos de la base de datos
         $listaProductos = Producto::all();
 
         return view('administrar/administrar', ['datosProductos' => $listaProductos]);
@@ -20,15 +28,25 @@ class adminController extends Controller
     // ----- FIN MOSTRAR PRODUCTOS -----
 
     // ----- AÑADIR PRODUCTO -----
+    
+    /**
+     * Muestra el formulario para crear un nuevo producto
+     */
     public function menuNuevo()
     {
         return view('administrar/nuevoProd');
     }
 
+    /**
+     * Guarda un nuevo producto con hasta 4 imágenes
+     * Crea un directorio específico para cada producto usando su ID
+     */
     public function nuevoProd(Request $request)
     {
+        // Crea nuevo producto
         $producto = new producto;
 
+        // Asigna los datos básicos del producto
         $titulo = $request->titulo;
         $producto->titulo = $titulo;
 
@@ -50,27 +68,29 @@ class adminController extends Controller
         $precio = $request->precio;
         $producto->precio = $precio;
 
-        $valoracion = $request->valoracion ?? 0; // Valor por defecto si no se proporciona
+        // Valoración opcional (por defecto 0)
+        $valoracion = $request->valoracion ?? 0;
         $producto->valoracion = $valoracion;
 
-        // Inicializar imágenes con valor por defecto
+        // Inicializa imágenes con valor por defecto
         $producto->imagen = 'img/productos/default.jpg';
         $producto->img2 = 'img/productos/default.jpg';
         $producto->img3 = 'img/productos/default.jpg';
         $producto->img4 = 'img/productos/default.jpg';
 
+        // Guarda el producto para obtener su ID
         $producto->save();
 
-        // Obtener el ID del producto recién creado
+        // Obtiene el ID del producto recién creado
         $id = $producto->id;
 
-        // Crear directorio para las imágenes del producto
+        // Crea directorio específico para las imágenes de este producto
         $directorio = public_path('img/productos/' . $id);
         if (!file_exists($directorio)) {
             mkdir($directorio, 0755, true);
         }
 
-        // Manejar imagen principal
+        // Procesa imagen principal si se subió
         if ($request->hasFile('nueva_imagen')) {
             $file = $request->file("nueva_imagen");
             $nombre = bin2hex(random_bytes(5)) . "." . $file->guessExtension();
@@ -81,7 +101,7 @@ class adminController extends Controller
             $producto->imagen = $ruta;
         }
 
-        // Manejar imagen 2
+        // Procesa imagen 2 si se subió
         if ($request->hasFile('img2')) {
             $file2 = $request->file("img2");
             $nombre2 = bin2hex(random_bytes(5)) . "." . $file2->guessExtension();
@@ -92,7 +112,7 @@ class adminController extends Controller
             $producto->img2 = $ruta2;
         }
 
-        // Manejar imagen 3
+        // Procesa imagen 3 si se subió
         if ($request->hasFile('img3')) {
             $file3 = $request->file("img3");
             $nombre3 = bin2hex(random_bytes(5)) . "." . $file3->guessExtension();
@@ -103,7 +123,7 @@ class adminController extends Controller
             $producto->img3 = $ruta3;
         }
 
-        // Manejar imagen 4
+        // Procesa imagen 4 si se subió
         if ($request->hasFile('img4')) {
             $file4 = $request->file("img4");
             $nombre4 = bin2hex(random_bytes(5)) . "." . $file4->guessExtension();
@@ -114,7 +134,7 @@ class adminController extends Controller
             $producto->img4 = $ruta4;
         }
 
-        // Guardar los cambios de las imágenes
+        // Guarda las rutas de las imágenes
         $producto->save();
 
         return redirect('/administrar');
@@ -122,26 +142,35 @@ class adminController extends Controller
     // ----- FIN AÑADIR PRODUCTO -----
 
     // ----- BORRAR PRODUCTO -----
+    
+    /**
+     * Elimina un producto y todas sus imágenes
+     */
     public function borrar($id)
     {
+        // Busca el producto
         $producto = Producto::find($id);
         $producto->delete();
 
+        // Elimina la imagen principal del servidor
         $ruta_img = public_path($producto->imagen);
         if ($ruta_img) {
             unlink($ruta_img);
         }
 
+        // Elimina imagen 2
         $ruta_img2 = public_path($producto->img2);
         if ($ruta_img2) {
             unlink($ruta_img2);
         }
 
+        // Elimina imagen 3
         $ruta_img3 = public_path($producto->img3);
         if ($ruta_img3) {
             unlink($ruta_img3);
         }
 
+        // Elimina imagen 4
         $ruta_img4 = public_path($producto->img4);
         if ($ruta_img4) {
             unlink($ruta_img4);
@@ -152,16 +181,27 @@ class adminController extends Controller
     // ----- FIN BORRAR PRODUCTO -----
 
     // ----- EDITAR PRODUCTO -----
+    
+    /**
+     * Muestra el formulario para editar un producto existente
+     */
     public function menuEditar($id)
     {
+        // Busca el producto a editar
         $producto = Producto::find($id);
         return view('administrar/editarProd', ["producto" => $producto]);
     }
 
+    /**
+     * Actualiza los datos de un producto existente
+     * Permite cambiar todas las imágenes, eliminando las antiguas
+     */
     public function confirmarCambios(Request $request, $id)
     {
+        // Busca el producto a actualizar
         $producto = Producto::find($id);
 
+        // Actualiza los campos del producto
         $titulo = $request->input('titulo');
         $producto->titulo = $titulo;
 
@@ -183,13 +223,14 @@ class adminController extends Controller
         $precio = $request->input('precio');
         $producto->precio = $precio;
 
-        // Imagen principal
+        // Actualiza imagen principal si se subió una nueva
         if ($request->hasFile('nueva_imagen')) {
             $file = $request->file("nueva_imagen");
             $nombre = bin2hex(random_bytes(5)) . "." . $file->guessExtension();
             $ruta = "img/productos/" . $id . "/" . $nombre;
             $destino = public_path($ruta);
 
+            // Elimina la imagen anterior si no es la default
             if ($producto->imagen != 'img/productos/default.jpg') {
                 $ruta_img = public_path($producto->imagen);
                 if ($ruta_img) {
@@ -197,17 +238,19 @@ class adminController extends Controller
                 }
             }
 
+            // Guarda la nueva imagen
             copy($file, $destino);
             $producto->imagen = $ruta;
         }
 
-        //Imagenes secundarias
+        // Actualiza imagen 2 si se subió una nueva
         if ($request->hasFile('img2')) {
             $file2 = $request->file("img2");
             $nombre2 = bin2hex(random_bytes(5)) . "." . $file2->guessExtension();
             $ruta2 = "img/productos/" . $id . "/" . $nombre2;
             $destino2 = public_path($ruta2);
 
+            // Elimina imagen anterior
             if ($producto->img2 != 'img/productos/default.jpg') {
                 $ruta_img2 = public_path($producto->img2);
                 if ($ruta_img2) {
@@ -219,13 +262,14 @@ class adminController extends Controller
             $producto->img2 = $ruta2;
         }
 
-        //Imagenes secundarias
+        // Actualiza imagen 3 si se subió una nueva
         if ($request->hasFile('img3')) {
             $file3 = $request->file("img3");
             $nombre3 = bin2hex(random_bytes(5)) . "." . $file3->guessExtension();
             $ruta3 = "img/productos/" . $id . "/" . $nombre3;
             $destino3 = public_path($ruta3);
 
+            // Elimina imagen anterior
             if ($producto->img3 != 'img/productos/default.jpg') {
                 $ruta_img3 = public_path($producto->img3);
                 if ($ruta_img3) {
@@ -237,13 +281,14 @@ class adminController extends Controller
             $producto->img3 = $ruta3;
         }
 
-        //Imagenes secundarias
+        // Actualiza imagen 4 si se subió una nueva
         if ($request->hasFile('img4')) {
             $file4 = $request->file("img4");
             $nombre4 = bin2hex(random_bytes(5)) . "." . $file4->guessExtension();
             $ruta4 = "img/productos/" . $id . "/" . $nombre4;
             $destino4 = public_path($ruta4);
 
+            // Elimina imagen anterior
             if ($producto->img4 != 'img/productos/default.jpg') {
                 $ruta_img4 = public_path($producto->img4);
                 if ($ruta_img4) {
@@ -255,6 +300,7 @@ class adminController extends Controller
             $producto->img4 = $ruta4;
         }
 
+        // Guarda todos los cambios
         $producto->save();
 
         return redirect('/administrar');

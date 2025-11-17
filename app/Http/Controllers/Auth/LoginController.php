@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controlador de Login
+ * Gestiona la autenticación de usuarios y el cierre de sesión
+ */
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -13,28 +18,28 @@ class LoginController extends Controller
     | Login Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
+    | Este controlador gestiona la autenticación de usuarios en la aplicación
+    | y la redirección después del login. Usa el trait AuthenticatesUsers
+    | que proporciona toda la funcionalidad de inicio de sesión.
     |
     */
 
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
+     * Ruta de redirección después del login exitoso
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Constructor del controlador
+     * Aplica middleware 'guest' excepto para logout
      */
     public function __construct()
     {
+        // Solo usuarios no autenticados pueden acceder, excepto para cerrar sesión
         $this->middleware('guest')->except('logout');
     }
 }

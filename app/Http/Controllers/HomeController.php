@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controlador Home
+ * Gestiona el dashboard del usuario autenticado
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,19 +12,18 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Constructor del controlador
+     * Aplica middleware 'auth' a todas las rutas
      */
     public function __construct()
     {
+        // Requiere que el usuario esté autenticado
         $this->middleware('auth');
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * Muestra el dashboard del usuario
+     * Vista principal después del login
      */
     public function index()
     {

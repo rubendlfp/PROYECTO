@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controlador de Restablecimiento de Contraseña
+ * Gestiona el proceso de cambio de contraseña después del enlace de recuperación
+ */
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -13,16 +18,16 @@ class ResetPasswordController extends Controller
     | Password Reset Controller
     |--------------------------------------------------------------------------
     |
-    | This controller is responsible for handling password reset requests
-    | and uses a simple trait to include this behavior. You're free to
-    | explore this trait and override any methods you wish to tweak.
+    | Este controlador gestiona las peticiones de restablecimiento de contraseña
+    | después de que el usuario recibe el email de recuperación. Usa el trait
+    | ResetsPasswords que proporciona toda la funcionalidad necesaria.
     |
     */
 
     use ResetsPasswords;
 
     /**
-     * Where to redirect users after resetting their password.
+     * Ruta de redirección después de restablecer la contraseña exitosamente
      *
      * @var string
      */

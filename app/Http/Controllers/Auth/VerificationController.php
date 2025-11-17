@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controlador de Verificación de Email
+ * Gestiona la verificación de correo electrónico de nuevos usuarios
+ */
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -13,30 +18,32 @@ class VerificationController extends Controller
     | Email Verification Controller
     |--------------------------------------------------------------------------
     |
-    | This controller is responsible for handling email verification for any
-    | user that recently registered with the application. Emails may also
-    | be re-sent if the user didn't receive the original email message.
+    | Este controlador gestiona la verificación de email para usuarios que
+    | se registraron recientemente. También permite reenviar el email de
+    | verificación si el usuario no recibió el mensaje original.
     |
     */
 
     use VerifiesEmails;
 
     /**
-     * Where to redirect users after verification.
+     * Ruta de redirección después de verificar el email exitosamente
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Constructor del controlador
+     * Aplica middleware de autenticación, firma y throttling
      */
     public function __construct()
     {
+        // Requiere autenticación
         $this->middleware('auth');
+        // Verifica que el enlace de verificación esté firmado
         $this->middleware('signed')->only('verify');
+        // Limita intentos: máximo 6 intentos por minuto
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 }
