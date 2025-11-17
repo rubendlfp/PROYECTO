@@ -22,9 +22,9 @@ class LimpiarBaseDatos extends Seeder
         
         // Limpiar tablas en el orden correcto (hijas primero para evitar errores de FK)
         $tablasALimpiar = [
-            'carrito_compras',
+            'carrito',
             'favoritos', 
-            'detalles_pedido',
+            'pedidos',
             'compraventas', // Corregido: era 'compraventa', debería ser 'compraventas'
             'productos',
             'users'

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('carrito_compras', function (Blueprint $table) {
+        Schema::create('carrito', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_producto')->constrained('productos')->onDelete('cascade');

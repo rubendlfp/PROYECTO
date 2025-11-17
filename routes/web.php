@@ -19,14 +19,14 @@
  * - carritoController: Gestión del carrito de compras
  * - adminController: Panel de administración de productos
  * - compraventaController: Sistema de compraventa entre usuarios
- * - detalles_pedidoController: Proceso de pago y gestión de pedidos
+ * - pedidosController: Proceso de pago y gestión de pedidos
  * - favoritosController: Lista de favoritos del usuario
  */
 
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\carritoController;
 use App\Http\Controllers\compraventaController;
-use App\Http\Controllers\detalles_pedidoController;
+use App\Http\Controllers\pedidosController;
 use App\Http\Controllers\favoritosController;
 use App\Http\Controllers\productoController;
 use Illuminate\Support\Facades\Auth;
@@ -242,17 +242,17 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     /**
      * GET /administrar_pedidos
      * Muestra listado de todos los pedidos realizados por clientes
-     * Controlador: detalles_pedidoController@administrarPedidos
+     * Controlador: pedidosController@administrarPedidos
      */
-    Route::get('/administrar_pedidos', [detalles_pedidoController::class, 'administrarPedidos'])->name('administrarPedidos');
+    Route::get('/administrar_pedidos', [pedidosController::class, 'administrarPedidos'])->name('administrarPedidos');
     
     /**
      * GET /pedido/{id}
      * Muestra detalles completos de un pedido específico
-     * Controlador: detalles_pedidoController@verDetallePedido
+     * Controlador: pedidosController@verDetallePedido
      * Parámetro: {id} - ID del pedido
      */
-    Route::get('/pedido/{id}', [detalles_pedidoController::class, 'verDetallePedido'])->name('verDetallePedido');
+    Route::get('/pedido/{id}', [pedidosController::class, 'verDetallePedido'])->name('verDetallePedido');
 });
 
 /**
@@ -313,7 +313,7 @@ Route::group(['middleware' => 'auth'], function () {
      * POST /actualizarCantidad/{id}
      * Actualiza la cantidad de un producto en el carrito
      * Controlador: carritoController@actualizarCantidad
-     * Parámetro: {id} - ID del registro en carrito_compras
+     * Parámetro: {id} - ID del registro en carrito
      * Campos: cantidad (nuevo valor)
      */
     Route::post('/actualizarCantidad/{id}', [carritoController::class, 'actualizarCantidad'])->name('actualizarCantidad');
@@ -345,20 +345,20 @@ Route::group(['middleware' => 'auth'], function () {
     /**
      * GET /pagar/{precioTotal}
      * Muestra el formulario de detalles de pago (nombre, dirección, país, ciudad)
-     * Controlador: detalles_pedidoController@mostrarDetallesPago
+     * Controlador: pedidosController@mostrarDetallesPago
      * Parámetro: {precioTotal} - Total del carrito
      */
-    Route::get('/pagar/{precioTotal}', [detalles_pedidoController::class, 'mostrarDetallesPago'])->name('pagar');
+    Route::get('/pagar/{precioTotal}', [pedidosController::class, 'mostrarDetallesPago'])->name('pagar');
     
     /**
      * POST /guardarDetallesPedido/{precioTotal}
      * Procesa el pago, guarda el pedido y vacía el carrito
-     * Controlador: detalles_pedidoController@guardarDetallesPedido
+     * Controlador: pedidosController@guardarDetallesPedido
      * Parámetro: {precioTotal} - Total del pedido
      * Campos: nombre, direccion, pais, ciudad
-     * Lógica: Verifica saldo, descuenta del usuario, guarda detalles_pedido
+     * Lógica: Verifica saldo, descuenta del usuario, guarda pedidos
      */
-    Route::post('/guardarDetallesPedido/{precioTotal}', [detalles_pedidoController::class, 'guardarDetallesPedido'])->name('guardarDetallesPedido');
+    Route::post('/guardarDetallesPedido/{precioTotal}', [pedidosController::class, 'guardarDetallesPedido'])->name('guardarDetallesPedido');
 
     /**
      * --- FAVORITOS ---

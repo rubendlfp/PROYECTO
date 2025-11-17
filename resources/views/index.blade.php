@@ -33,7 +33,7 @@ Funcionalidad: Navegación principal, menú de administrador, contador de carrit
     {{-- Hojas de estilo personalizadas --}}
     <link rel="stylesheet" href="{{ asset('css/filtros/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/perfil/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/detalles_pedido/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pedidos/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/pagina_principal/style.css') }}">
     
     {{-- === BOOTSTRAP 5.0.2 JS BUNDLE === --}}

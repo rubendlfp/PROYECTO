@@ -18,7 +18,7 @@
  * - carritoCompra.blade.php (listado del carrito con productos y total)
  * 
  * Modelos utilizados:
- * - CarritoCompra (tabla: carrito_compras)
+ * - CarritoCompra (tabla: carrito)
  * - Producto (relación con CarritoCompra)
  * 
  * Seguridad:
@@ -91,7 +91,7 @@ class carritoController extends Controller
             $carritoExistente->cantidad += $cantidad;
             $carritoExistente->save();
         } else {
-            // Si no existe, crear nuevo registro en carrito_compras
+            // Si no existe, crear nuevo registro en carrito
             CarritoCompra::create([
                 'id_user' => $userId,
                 'id_producto' => $productoId,
@@ -134,7 +134,7 @@ class carritoController extends Controller
      * Variables enviadas a la vista:
      * @return Collection $datosCarrito - Carrito con relación 'producto' cargada (eager loading)
      *   Cada item incluye:
-     *   - id (carrito_compras.id)
+     *   - id (carrito.id)
      *   - cantidad
      *   - producto (objeto completo: titulo, precio, img1, etc.)
      * 
@@ -182,7 +182,7 @@ class carritoController extends Controller
      * @param int $cantidad - (required) Nueva cantidad, entre 1-10
      * 
      * Parámetros de ruta:
-     * @param int $id - ID del registro en tabla carrito_compras (no id_producto)
+     * @param int $id - ID del registro en tabla carrito (no id_producto)
      * 
      * Seguridad:
      * Verifica que el registro pertenezca al usuario autenticado (where id_user).
@@ -224,7 +224,7 @@ class carritoController extends Controller
      * Usado desde los botones de "Eliminar" en carritoCompra.blade.php.
      * 
      * Validación:
-     * @param int $id_borrar - (required) ID del registro en carrito_compras
+     * @param int $id_borrar - (required) ID del registro en carrito
      * 
      * Parámetros GET:
      * ?id_borrar=123
