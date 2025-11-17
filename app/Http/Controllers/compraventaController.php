@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\compraventa;
+use App\Models\Compraventa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,7 +10,7 @@ class compraventaController extends Controller
 {
     public function mostrarCompraventa()
     {
-        $listaProductos = compraventa::all();
+        $listaProductos = Compraventa::all();
 
         return view('compraventa/compraventa', ['datosCompraventa' => $listaProductos]);
     }
@@ -20,9 +20,9 @@ class compraventaController extends Controller
         // Si es administrador (tipo_usuario = 1), mostrar todos los productos con información del propietario
         // Si es usuario normal, solo mostrar sus productos
         if (auth()->user()->tipo_usuario == 1) {
-            $listaProductos = compraventa::with('user')->get();
+            $listaProductos = Compraventa::with('user')->get();
         } else {
-            $listaProductos = compraventa::where('id_user', auth()->user()->id)->get();
+            $listaProductos = Compraventa::where('id_user', auth()->user()->id)->get();
         }
 
         return view('compraventa/compraventa_administrar', ['datosCompraventa' => $listaProductos]);
@@ -35,7 +35,7 @@ class compraventaController extends Controller
 
     public function nuevoProdCompraventa(Request $request)
     {
-        $producto_compraventa = new compraventa;
+        $producto_compraventa = new Compraventa;
 
         $id_user = auth()->user()->id;
         $producto_compraventa->id_user = $id_user;
@@ -70,13 +70,13 @@ class compraventaController extends Controller
 
     public function productoUnicoCompraventa($id)
     {
-        $producto = compraventa::find($id);
+        $producto = Compraventa::find($id);
         return view('compraventa/productoCompraventa', ["producto" => $producto]);
     }
 
     public function borrarProdCompraventa($id)
     {
-        $producto = compraventa::find($id);
+        $producto = Compraventa::find($id);
         
         if ($producto) {
             $producto->delete();
@@ -87,13 +87,13 @@ class compraventaController extends Controller
 
     public function editarCompraventa($id)
     {
-        $producto = compraventa::find($id);
+        $producto = Compraventa::find($id);
         return view('compraventa/editarCompraventa', ["producto" => $producto]);
     }
 
     public function actualizarCompraventa(Request $request, $id)
     {
-        $producto = compraventa::find($id);
+        $producto = Compraventa::find($id);
 
         if ($request->hasFile('nueva_imagen')) {
             $file = $request->file("nueva_imagen");

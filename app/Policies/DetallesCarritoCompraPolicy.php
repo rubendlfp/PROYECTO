@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\detallesCarritoCompra;
+use App\Models\DetallePedido;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DetallesCarritoCompraPolicy
@@ -25,10 +25,10 @@ class DetallesCarritoCompraPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\detallesCarritoCompra  $detallesCarritoCompra
+     * @param  \App\Models\DetallePedido  $detallePedido
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, detallesCarritoCompra $detallesCarritoCompra)
+    public function view(User $user, DetallePedido $detallePedido)
     {
         //
     }
@@ -48,10 +48,10 @@ class DetallesCarritoCompraPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\detallesCarritoCompra  $detallesCarritoCompra
+     * @param  \App\Models\DetallePedido  $detallePedido
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, detallesCarritoCompra $detallesCarritoCompra)
+    public function update(User $user, DetallePedido $detallePedido)
     {
         //
     }
@@ -60,10 +60,10 @@ class DetallesCarritoCompraPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\detallesCarritoCompra  $detallesCarritoCompra
+     * @param  \App\Models\DetallePedido  $detallePedido
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, detallesCarritoCompra $detallesCarritoCompra)
+    public function delete(User $user, DetallePedido $detallePedido)
     {
         //
     }
@@ -72,10 +72,10 @@ class DetallesCarritoCompraPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\detallesCarritoCompra  $detallesCarritoCompra
+     * @param  \App\Models\DetallePedido  $detallePedido
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, detallesCarritoCompra $detallesCarritoCompra)
+    public function restore(User $user, DetallePedido $detallePedido)
     {
         //
     }
@@ -84,10 +84,10 @@ class DetallesCarritoCompraPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\detallesCarritoCompra  $detallesCarritoCompra
+     * @param  \App\Models\DetallePedido  $detallePedido
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, detallesCarritoCompra $detallesCarritoCompra)
+    public function forceDelete(User $user, DetallePedido $detallePedido)
     {
         //
     }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class producto extends Model
+class Producto extends Model
 {
     use HasFactory;
 
@@ -35,18 +35,18 @@ class producto extends Model
     // Relación con el carrito de compras
     public function carritoCompras()
     {
-        return $this->hasMany(carritoCompra::class, 'id_producto');
+        return $this->hasMany(CarritoCompra::class, 'id_producto');
     }
 
     // Relación con favoritos
     public function favoritos()
     {
-        return $this->hasMany(favoritos::class, 'id_producto');
+        return $this->hasMany(Favorito::class, 'id_producto');
     }
 
     // Relación con compraventa
     public function compraventas()
     {
-        return $this->hasMany(compraventa::class, 'id_producto');
+        return $this->hasMany(Compraventa::class, 'id_producto');
     }
 }

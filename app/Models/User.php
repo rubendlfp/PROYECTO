@@ -47,24 +47,24 @@ class User extends Authenticatable
     // Relación con el carrito de compras
     public function carritoCompras()
     {
-        return $this->hasMany(carritoCompra::class, 'id_user');
+        return $this->hasMany(CarritoCompra::class, 'id_user');
     }
 
     // Relación con favoritos
     public function favoritos()
     {
-        return $this->hasMany(favoritos::class, 'id_user');
+        return $this->hasMany(Favorito::class, 'id_user');
     }
 
     // Relación con detalles de pedido
     public function detallesPedidos()
     {
-        return $this->hasMany(detallesPedido::class, 'id_user');
+        return $this->hasMany(DetallePedido::class, 'id_user');
     }
 
     // Relación con compraventa
     public function compraventas()
     {
-        return $this->hasMany(compraventa::class, 'id_user');
+        return $this->hasMany(Compraventa::class, 'id_user');
     }
 }

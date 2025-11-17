@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\producto;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class adminController extends Controller
@@ -13,7 +13,7 @@ class adminController extends Controller
     // --- Mostrar todos los productos ---
     public function mostrarProductos()
     {
-        $listaProductos = producto::all();
+        $listaProductos = Producto::all();
 
         return view('administrar/administrar', ['datosProductos' => $listaProductos]);
     }
@@ -124,7 +124,7 @@ class adminController extends Controller
     // ----- BORRAR PRODUCTO -----
     public function borrar($id)
     {
-        $producto = producto::find($id);
+        $producto = Producto::find($id);
         $producto->delete();
 
         $ruta_img = public_path($producto->imagen);
@@ -154,13 +154,13 @@ class adminController extends Controller
     // ----- EDITAR PRODUCTO -----
     public function menuEditar($id)
     {
-        $producto = producto::find($id);
+        $producto = Producto::find($id);
         return view('administrar/editarProd', ["producto" => $producto]);
     }
 
     public function confirmarCambios(Request $request, $id)
     {
-        $producto = producto::find($id);
+        $producto = Producto::find($id);
 
         $titulo = $request->input('titulo');
         $producto->titulo = $titulo;

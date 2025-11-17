@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\favoritos;
+use App\Models\Favorito;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +17,7 @@ class favoritosController extends Controller
 
     public function añadirFavorito(Request $request)
     {
-        $carrito = new favoritos();
+        $carrito = new Favorito();
 
         $id_producto = $request->id_producto;
         $carrito->id_producto = $id_producto;
@@ -34,7 +34,7 @@ class favoritosController extends Controller
     {
         $id = (int) $request->input('id_borrar');
 
-        $articulo = favoritos::find($id);
+        $articulo = Favorito::find($id);
         $articulo->delete();
 
         return redirect('/favoritos');

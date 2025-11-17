@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\producto;
+use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -11,7 +11,7 @@ class productoController extends Controller
     // --- Mostrar todos los productos ---
     public function mostrarProductos(Request $request)
     {
-        $query = producto::query();
+        $query = Producto::query();
 
         // Filtro por categoría (tipo)
         if ($request->filled('categoria')) {
@@ -59,7 +59,7 @@ class productoController extends Controller
     // --- Mostrar ropa deportiva (método requerido por las rutas) ---
     public function mostrarRopaDeportiva()
     {
-        $listaProductos = producto::where('tipo', 'ropa')->get();
+        $listaProductos = Producto::where('tipo', 'ropa')->get();
         return view('comprar', ['datosProductos' => $listaProductos, 'categoria' => 'ROPA DEPORTIVA']);
     }
 
@@ -74,7 +74,7 @@ class productoController extends Controller
     // --- Mostrar calzado deportivo (método requerido por las rutas) ---
     public function mostrarCalzadoDeportivo()
     {
-        $listaProductos = producto::where('tipo', 'calzado')->get();
+        $listaProductos = Producto::where('tipo', 'calzado')->get();
         return view('comprar', ['datosProductos' => $listaProductos, 'categoria' => 'CALZADO DEPORTIVO']);
     }
 
@@ -89,7 +89,7 @@ class productoController extends Controller
     // --- Mostrar equipamiento (método requerido por las rutas) ---
     public function mostrarEquipamiento()
     {
-        $listaProductos = producto::where('tipo', 'complementos')->get();
+        $listaProductos = Producto::where('tipo', 'complementos')->get();
         return view('comprar', ['datosProductos' => $listaProductos, 'categoria' => 'EQUIPAMIENTO']);
     }
 
@@ -112,7 +112,7 @@ class productoController extends Controller
     // --- Mostrar solo un producto ---
     public function mostrarProductoUnico($id)
     {
-        $producto = producto::find($id);
+        $producto = Producto::find($id);
         return view('producto', ["producto" => $producto]);
     }
 }

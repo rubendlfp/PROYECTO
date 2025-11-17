@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\detallesPedido;
+use App\Models\DetallePedido;
 use App\Models\User;
-use App\Models\carritoCompra;
+use App\Models\CarritoCompra;
 use Illuminate\Http\Request;
 
 class detalles_pedidoController extends Controller
@@ -27,7 +27,7 @@ class detalles_pedidoController extends Controller
 
         $usuario->save();
 
-        $detalles_pedido = new detallesPedido();
+        $detalles_pedido = new DetallePedido();
 
         $id_user = auth()->user()->id;
         $detalles_pedido->id_user = $id_user;
@@ -46,7 +46,7 @@ class detalles_pedidoController extends Controller
         $detalles_pedido->save();
 
         // Eliminar todos los artículos del carrito del usuario después del pago exitoso
-        carritoCompra::where('id_user', $id_user)->delete();
+        CarritoCompra::where('id_user', $id_user)->delete();
 
         return view('agradecimiento');
     }
@@ -58,10 +58,10 @@ class detalles_pedidoController extends Controller
     {
         // Solo los administradores pueden ver todos los pedidos
         if (auth()->user()->tipo_usuario == 1) {
-            $pedidos = detallesPedido::with('user')->orderBy('created_at', 'desc')->get();
+            $pedidos = DetallePedido::with('user')->orderBy('created_at', 'desc')->get();
         } else {
             // Los usuarios normales solo ven sus propios pedidos
-            $pedidos = detallesPedido::where('id_user', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+            $pedidos = DetallePedido::where('id_user', auth()->user()->id)->orderBy('created_at', 'desc')->get();
         }
 
         return view('administrar.pedidos_administrar', ['pedidos' => $pedidos]);
@@ -72,7 +72,7 @@ class detalles_pedidoController extends Controller
      */
     public function verDetallePedido($id)
     {
-        $pedido = detallesPedido::with('user')->findOrFail($id);
+        $pedido = DetallePedido::with('user')->findOrFail($id);
         
         // Verificar permisos: admin puede ver todos, usuario solo sus propios pedidos
         if (auth()->user()->tipo_usuario != 1 && $pedido->id_user != auth()->user()->id) {

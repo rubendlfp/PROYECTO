@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\carritoCompra;
-use App\Models\producto;
+use App\Models\CarritoCompra;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +21,7 @@ class carritoController extends Controller
         $cantidad = $request->cantidad ?? 1;
 
         // Verificar si el producto ya está en el carrito
-        $carritoExistente = carritoCompra::where('id_user', $userId)
+        $carritoExistente = CarritoCompra::where('id_user', $userId)
             ->where('id_producto', $productoId)
             ->first();
 
@@ -31,7 +31,7 @@ class carritoController extends Controller
             $carritoExistente->save();
         } else {
             // Si no existe, crear nuevo registro
-            carritoCompra::create([
+            CarritoCompra::create([
                 'id_user' => $userId,
                 'id_producto' => $productoId,
                 'cantidad' => $cantidad
@@ -39,7 +39,7 @@ class carritoController extends Controller
         }
 
         // Obtener el total de productos en el carrito
-        $totalProductos = carritoCompra::where('id_user', $userId)->sum('cantidad');
+        $totalProductos = CarritoCompra::where('id_user', $userId)->sum('cantidad');
 
         // Si es una petición AJAX, devolver JSON
         if ($request->ajax()) {
@@ -58,7 +58,7 @@ class carritoController extends Controller
         $userId = Auth::id();
         
         // Usar Eloquent relationships para obtener los datos del carrito
-        $carrito = carritoCompra::with('producto')
+        $carrito = CarritoCompra::with('producto')
             ->where('id_user', $userId)
             ->get();
 
@@ -78,7 +78,7 @@ class carritoController extends Controller
             'cantidad' => 'required|integer|min:1|max:10'
         ]);
 
-        $articulo = carritoCompra::where('id', $id)
+        $articulo = CarritoCompra::where('id', $id)
             ->where('id_user', Auth::id())
             ->firstOrFail();
 
@@ -96,7 +96,7 @@ class carritoController extends Controller
 
         $id = $request->input('id_borrar');
 
-        $articulo = carritoCompra::where('id', $id)
+        $articulo = CarritoCompra::where('id', $id)
             ->where('id_user', Auth::id())
             ->firstOrFail();
             

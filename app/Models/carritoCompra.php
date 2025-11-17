@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class carritoCompra extends Model
+class CarritoCompra extends Model
 {
     use HasFactory;
 
@@ -32,6 +32,6 @@ class carritoCompra extends Model
     // Relación con el modelo Producto
     public function producto()
     {
-        return $this->belongsTo(producto::class, 'id_producto');
+        return $this->belongsTo(Producto::class, 'id_producto');
     }
 }
