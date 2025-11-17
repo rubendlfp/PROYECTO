@@ -1,7 +1,21 @@
+{{--
+===========================================
+VISTA: Home / Dashboard de Usuario
+===========================================
+Propósito: Panel de control personal del usuario con información de perfil y acciones rápidas
+Acceso: Usuarios autenticados
+Funcionalidad: Ver perfil, saldo, acceso a favoritos, carrito, administración (si es admin)
+Ruta: /home
+--}}
+
 @extends('index')
 
 @section('contenido_principal')
+
+{{-- === ESTILOS PERSONALIZADOS === --}}
 <style>
+/* === ANIMACIÓN FADE IN UP === */
+/* Aparición desde abajo con fade */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -13,6 +27,8 @@
     }
 }
 
+/* === ANIMACIÓN PULSE === */
+/* Pulsación suave para efectos de fondo */
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
@@ -22,22 +38,30 @@
     }
 }
 
+/* === TARJETA MODERNA === */
+/* Tarjeta principal con glassmorphism */
 .modern-card {
+    /* Fondo blanco semi-transparente */
     background: rgba(255, 255, 255, 0.95);
+    /* Efecto de desenfoque del fondo */
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 25px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+    /* Animación de entrada */
     animation: fadeInUp 0.8s ease-out;
     overflow: hidden;
 }
 
+/* === SECCIÓN DE PERFIL === */
+/* Panel lateral izquierdo con gradiente púrpura */
 .profile-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     position: relative;
     overflow: hidden;
 }
 
+/* Efecto de luz radial animado en el fondo */
 .profile-section::before {
     content: '';
     position: absolute;
@@ -45,16 +69,22 @@
     left: -50%;
     width: 200%;
     height: 200%;
+    /* Gradiente radial para efecto de brillo */
     background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    /* Animación de pulsación continua */
     animation: pulse 4s ease-in-out infinite;
 }
 
+/* === AVATAR DE PERFIL === */
+/* Círculo con ícono de usuario */
 .profile-avatar {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     border: 5px solid rgba(255, 255, 255, 0.3);
+    /* Gradiente rosa suave */
     background: linear-gradient(45deg, #ff9a9e, #fecfef);
+    /* Centrado del ícono */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,11 +94,13 @@
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
+/* Ícono de usuario dentro del círculo */
 .profile-avatar i {
     font-size: 3rem;
     color: white;
 }
 
+/* === NOMBRE DE USUARIO === */
 .user-name {
     font-size: 1.8rem;
     font-weight: 700;
@@ -77,6 +109,8 @@
     z-index: 2;
 }
 
+/* === SALDO DEL USUARIO === */
+/* Badge con gradiente azul/cyan mostrando el saldo */
 .user-balance {
     background: linear-gradient(45deg, #4facfe, #00f2fe);
     padding: 10px 20px;
@@ -89,6 +123,8 @@
     z-index: 2;
 }
 
+/* === BOTÓN DE LOGOUT === */
+/* Botón con gradiente rojo para cerrar sesión */
 .logout-btn {
     background: linear-gradient(45deg, #ff6b6b, #ee5a24);
     border: none;
@@ -103,6 +139,7 @@
     z-index: 2;
 }
 
+/* Efecto de elevación al hover */
 .logout-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
@@ -110,10 +147,13 @@
     text-decoration: none;
 }
 
+/* === SECCIÓN DE INFORMACIÓN === */
+/* Panel derecho con detalles y acciones */
 .info-section {
     padding: 40px 35px;
 }
 
+/* === TÍTULO DE SECCIÓN === */
 .section-title {
     font-size: 1.3rem;
     font-weight: 700;
@@ -122,6 +162,7 @@
     position: relative;
 }
 
+/* Línea decorativa debajo del título */
 .section-title::after {
     content: '';
     position: absolute;
@@ -133,10 +174,12 @@
     border-radius: 2px;
 }
 
+/* === ITEM DE INFORMACIÓN === */
 .info-item {
     margin-bottom: 25px;
 }
 
+/* Etiqueta del campo */
 .info-label {
     font-weight: 600;
     color: #5a6c7d;
@@ -144,17 +187,21 @@
     font-size: 0.95rem;
 }
 
+/* Valor del campo */
 .info-value {
     color: #2c3e50;
     font-size: 1.1rem;
 }
 
+/* === BOTONES DE ACCIÓN === */
+/* Botones circulares para acciones rápidas */
 .action-btn {
     background: linear-gradient(45deg, #a8edea, #fed6e3);
     border: none;
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    /* Centrado del ícono */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,6 +211,7 @@
     text-decoration: none;
 }
 
+/* Efecto de elevación y escala al hover */
 .action-btn:hover {
     transform: translateY(-5px) scale(1.1);
     box-shadow: 0 15px 35px rgba(168, 237, 234, 0.4);
@@ -171,10 +219,13 @@
     text-decoration: none;
 }
 
+/* Tamaño del ícono dentro del botón */
 .action-btn i {
     font-size: 1.5rem;
 }
 
+/* === BOTÓN ADMINISTRADOR === */
+/* Variante con gradiente naranja/azul para panel de admin */
 .admin-btn {
     background: linear-gradient(45deg, #ffd89b, #19547b);
 }
@@ -183,6 +234,8 @@
     box-shadow: 0 15px 35px rgba(255, 216, 155, 0.4);
 }
 
+/* === BOTÓN FAVORITOS === */
+/* Variante con gradiente rosa para favoritos */
 .favorites-btn {
     background: linear-gradient(45deg, #ff9a9e, #fecfef);
 }
@@ -191,6 +244,8 @@
     box-shadow: 0 15px 35px rgba(255, 154, 158, 0.4);
 }
 
+/* === BOTÓN CARRITO === */
+/* Variante con gradiente verde para carrito */
 .cart-btn {
     background: linear-gradient(45deg, #a8e6cf, #dcedc1);
 }
@@ -200,39 +255,55 @@
 }
 </style>
 
+{{-- Espaciador superior --}}
 <div style="height: 42px;"></div>
+
+{{-- === CONTENEDOR PRINCIPAL === --}}
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-xl-8 col-lg-10">
+            {{-- === TARJETA DE PERFIL === --}}
             <div class="modern-card">
                 <div class="row g-0">
+                    {{-- === PANEL LATERAL IZQUIERDO (PERFIL) === --}}
                     <div class="col-md-4">
                         <div class="profile-section text-center text-white p-4 h-100 d-flex flex-column justify-content-center">
+                            {{-- Avatar con ícono de usuario --}}
                             <div class="profile-avatar">
                                 <i class="fas fa-user"></i>
                             </div>
+                            {{-- Nombre del usuario autenticado --}}
                             <h3 class="user-name">{{ Auth::user()->name }}</h3>
+                            {{-- Badge de administrador (solo si tipo_usuario == 1) --}}
                             @if(Auth::user()->tipo_usuario == 1)
                                 <div class="badge bg-warning text-dark mb-3 fs-6"> </div>
                             @endif
+                            {{-- Saldo del usuario --}}
                             <div class="user-balance">
                                 <i class="fas fa-wallet me-2"></i>Saldo: {{ Auth::user()->saldo }} €
                             </div>
+                            {{-- Botón de cerrar sesión --}}
+                            {{-- Previene navegación por defecto y envía formulario oculto --}}
                             <a class="logout-btn" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                             </a>
                         </div>
                     </div>
+                    
+                    {{-- === PANEL DERECHO (INFORMACIÓN Y ACCIONES) === --}}
                     <div class="col-md-8">
                         <div class="info-section">
+                            {{-- === SECCIÓN INFORMACIÓN === --}}
                             <h4 class="section-title">Información</h4>
                             <div class="row mb-4">
+                                {{-- Email del usuario --}}
                                 <div class="col-sm-6">
                                     <div class="info-item">
                                         <div class="info-label">Email</div>
                                         <div class="info-value">{{ Auth::user()->email }}</div>
                                     </div>
                                 </div>
+                                {{-- Botón de administración (solo para administradores) --}}
                                 @if(Auth::user()->tipo_usuario == 1)
                                 <div class="col-sm-6">
                                     <div class="info-item">
@@ -245,8 +316,10 @@
                                 @endif
                             </div>
                             
+                            {{-- === SECCIÓN ACCIONES === --}}
                             <h4 class="section-title">Acciones</h4>
                             <div class="row">
+                                {{-- Enlace a favoritos --}}
                                 <div class="col-sm-6">
                                     <div class="info-item">
                                         <div class="info-label">Favoritos</div>
@@ -255,6 +328,7 @@
                                         </a>
                                     </div>
                                 </div>
+                                {{-- Enlace al carrito --}}
                                 <div class="col-sm-6">
                                     <div class="info-item">
                                         <div class="info-label">Carrito de la compra</div>
@@ -271,15 +345,14 @@
         </div>
     </div>
 </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
+{{-- === FORMULARIO OCULTO DE LOGOUT === --}}
+{{-- Formulario POST para cerrar sesión de forma segura con token CSRF --}}
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>
 
+{{-- Espaciador inferior --}}
 <div style="height: 50px;"></div>
+
 @endsection

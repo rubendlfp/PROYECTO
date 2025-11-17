@@ -1,8 +1,19 @@
+{{-- 
+    Vista: Administración de Productos
+    Descripción: Página principal del panel de administración donde se listan todos los productos
+    Permite: Ver, editar y eliminar productos del inventario
+    Acceso: Solo usuarios administradores
+--}}
+
 @extends('index')
 
 @section('contenido_principal')
 <style>
-/* Estilos para la página de administración de productos */
+/* ============================================
+   ESTILOS PARA LA PÁGINA DE ADMINISTRACIÓN
+   ============================================ */
+
+/* --- Header de Administración --- */
 .admin-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -11,10 +22,12 @@
     border-radius: 15px;
 }
 
+/* --- Contenedor Principal --- */
 .admin-container {
     padding: 0 1rem;
 }
 
+/* --- Botón para Añadir Producto --- */
 .btn-add-product {
     background: linear-gradient(45deg, #28a745, #20c997);
     border: none;
@@ -38,6 +51,7 @@
     text-decoration: none;
 }
 
+/* --- Tabla de Productos --- */
 .products-table {
     background: white;
     border-radius: 15px;
@@ -46,6 +60,7 @@
     border: none;
 }
 
+/* --- Cabecera de Tabla --- */
 .table-header {
     background: linear-gradient(45deg, #2c3e50, #34495e);
     color: white;
@@ -59,6 +74,7 @@
     white-space: nowrap;
 }
 
+/* --- Filas de Tabla --- */
 .products-table tbody tr {
     transition: all 0.3s ease;
     border-bottom: 1px solid #e9ecef;
@@ -66,7 +82,7 @@
 
 .products-table tbody tr:hover {
     background-color: #f8f9fa;
-    transform: scale(1.01);
+    transform: scale(1.01); /* Efecto de zoom al hover */
 }
 
 .products-table tbody tr:last-child {
@@ -79,6 +95,7 @@
     border: none;
 }
 
+/* --- Imagen del Producto --- */
 .product-image {
     width: 60px;
     height: 60px;
@@ -89,25 +106,28 @@
 }
 
 .product-image:hover {
-    transform: scale(1.1);
+    transform: scale(1.1); /* Zoom en la imagen al hover */
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
+/* --- Título del Producto --- */
 .product-title {
     font-weight: 600;
     color: #2c3e50;
     max-width: 200px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; /* Agrega "..." si el texto es muy largo */
     white-space: nowrap;
 }
 
+/* --- Precio del Producto --- */
 .product-price {
     font-weight: 700;
     color: #667eea;
     font-size: 1.1rem;
 }
 
+/* --- Etiqueta de Categoría --- */
 .product-type {
     background: linear-gradient(45deg, #6c757d, #495057);
     color: white;
@@ -118,6 +138,7 @@
     display: inline-block;
 }
 
+/* --- Contenedor de Acciones (Editar/Borrar) --- */
 .actions-container {
     display: flex;
     gap: 0.5rem;
@@ -125,6 +146,7 @@
     justify-content: center;
 }
 
+/* --- Botón Editar --- */
 .btn-edit {
     background: linear-gradient(45deg, #007bff, #0056b3);
     border: none;
@@ -144,6 +166,7 @@
     color: white;
 }
 
+/* --- Botón Borrar --- */
 .btn-delete {
     background: linear-gradient(45deg, #dc3545, #c82333);
     border: none;
@@ -163,12 +186,13 @@
     color: white;
 }
 
+/* --- Contenedor Responsive de Tabla --- */
 .table-responsive-custom {
     border-radius: 15px;
     overflow: hidden;
 }
 
-/* ID Badge */
+/* --- Badge de ID --- */
 .id-badge {
     background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
@@ -182,7 +206,11 @@
     justify-content: center;
 }
 
-/* Responsive adjustments */
+/* ============================================
+   MEDIA QUERIES - DISEÑO RESPONSIVE
+   ============================================ */
+
+/* --- Tablets y pantallas medianas --- */
 @media (max-width: 768px) {
     .admin-header {
         padding: 1.5rem 0;
@@ -227,12 +255,14 @@
     }
 }
 
+/* --- Móviles y pantallas pequeñas --- */
 @media (max-width: 576px) {
     .btn-add-product {
         width: 100%;
         justify-content: center;
     }
     
+    /* Ajuste de ancho de columnas en móvil */
     .table-header th:nth-child(2),
     .products-table td:nth-child(2) {
         width: 80px;
@@ -245,8 +275,13 @@
 }
 </style>
 
+{{-- ============================================
+     SECCIÓN HTML - CONTENIDO PRINCIPAL
+     ============================================ --}}
+
 <div class="admin-container">
-    <!-- Header Section -->
+    
+    {{-- Header Section - Título y descripción --}}
     <div class="admin-header text-center">
         <div class="container">
             <h1 class="display-5 fw-bold mb-2">
@@ -257,7 +292,7 @@
         </div>
     </div>
 
-    <!-- Add Product Button -->
+    {{-- Botón para añadir nuevo producto --}}
     <div class="mb-4">
         <a href="{{route('menuNuevo')}}" class="btn-add-product">
             <i class="fas fa-plus me-2"></i>
@@ -265,9 +300,10 @@
         </a>
     </div>
 
-    <!-- Products Table -->
+    {{-- Tabla de productos --}}
     <div class="table-responsive-custom">
         <table class="table products-table">
+            {{-- Cabecera de la tabla --}}
             <thead class="table-header">
                 <tr>
                     <th scope="col">ID</th>
@@ -278,28 +314,44 @@
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
+            
+            {{-- Cuerpo de la tabla - Iteración sobre productos --}}
             <tbody>
                 @foreach ($datosProductos as $producto)
                     <tr>
+                        {{-- ID del producto --}}
                         <td>
                             <span class="id-badge">{{$producto->id}}</span>
                         </td>
+                        
+                        {{-- Imagen del producto --}}
                         <td>
-                            <img class="product-image" src="{{asset($producto->imagen)}}" alt="{{$producto->titulo}}"/>
+                            <img class="product-image" 
+                                 src="{{asset($producto->imagen)}}" 
+                                 alt="{{$producto->titulo}}"/>
                         </td>
+                        
+                        {{-- Título del producto --}}
                         <td>
                             <div class="product-title" title="{{$producto->titulo}}">
                                 {{$producto->titulo}}
                             </div>
                         </td>
+                        
+                        {{-- Precio formateado --}}
                         <td>
                             <span class="product-price">{{number_format($producto->precio, 2)}} €</span>
                         </td>
+                        
+                        {{-- Categoría/Tipo de producto --}}
                         <td>
                             <span class="product-type">{{ucfirst($producto->tipo)}}</span>
                         </td>
+                        
+                        {{-- Botones de acciones (Editar y Borrar) --}}
                         <td>
                             <div class="actions-container">
+                                {{-- Formulario para editar --}}
                                 <form action="{{route('menuEditar', $producto->id)}}" method="POST" class="d-inline">
                                     {{csrf_field()}}
                                     <button class="btn btn-edit" type="submit" title="Editar producto">
@@ -307,6 +359,7 @@
                                     </button>
                                 </form>
 
+                                {{-- Formulario para borrar con confirmación --}}
                                 <form action="{{route('borrar', $producto->id)}}" method="POST" class="d-inline" 
                                       onsubmit="return confirm('¿Estás seguro de que quieres eliminar este producto?')">
                                     {{csrf_field()}}
@@ -322,6 +375,7 @@
         </table>
     </div>
 
+    {{-- Mensaje cuando no hay productos --}}
     @if(count($datosProductos) == 0)
         <div class="text-center py-5">
             <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
