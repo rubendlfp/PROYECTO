@@ -11,7 +11,7 @@ class detalles_pedidoController extends Controller
 {
     public function mostrarDetallesPago($precioTotal)
     {
-        return view('pedidoss')->with('precioTotal', $precioTotal);
+        return view('detalles_pedidos')->with('precioTotal', $precioTotal);
     }
 
     public function guardarDetallesPedido(Request $request, $precioTotal)
@@ -27,23 +27,23 @@ class detalles_pedidoController extends Controller
 
         $usuario->save();
 
-        $pedidos = new DetallePedido();
+        $detalles_pedido = new DetallePedido();
 
         $id_user = auth()->user()->id;
-        $pedidos->id_user = $id_user;
+        $detalles_pedido->id_user = $id_user;
 
-        $pedidos->precio_total = $precioTotal;
+        $detalles_pedido->precio_total = $precioTotal;
 
         $pais = $request->input('pais');
-        $pedidos->pais = $pais;
+        $detalles_pedido->pais = $pais;
 
         $ciudad = $request->input('ciudad');
-        $pedidos->ciudad = $ciudad;
+        $detalles_pedido->ciudad = $ciudad;
 
         $direccion = $request->input('direccion');
-        $pedidos->direccion = $direccion;
+        $detalles_pedido->direccion = $direccion;
 
-        $pedidos->save();
+        $detalles_pedido->save();
 
         // Eliminar todos los artículos del carrito del usuario después del pago exitoso
         CarritoCompra::where('id_user', $id_user)->delete();
