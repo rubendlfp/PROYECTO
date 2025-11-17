@@ -255,8 +255,8 @@
                         <i class="fas fa-inbox fa-3x mb-3" style="opacity: 0.7;"></i>
                         <h3>No hay productos disponibles</h3>
                         <p>Sé el primero en publicar un producto en el marketplace</p>
-                        @if(Auth::check())
-                        <a href="{{ route('venderProducto') }}" class="btn btn-view-marketplace">
+                        @if(Auth::check() && Auth::user()->tipo_usuario == 1)
+                        <a href="{{ route('menuNuevoCompraventa') }}" class="btn btn-view-marketplace">
                             <i class="fas fa-plus me-2"></i>Vender Producto
                         </a>
                         @endif
@@ -266,7 +266,7 @@
             </div>
         </div>
 
-        @if(Auth::check() && count($datosCompraventa) > 0)
+        @if(Auth::check() && Auth::user()->tipo_usuario == 1 && count($datosCompraventa) > 0)
         <div class="text-center mt-5">
             <a href="{{ route('menuNuevoCompraventa') }}" class="btn" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; padding: 15px 30px; border-radius: 25px; font-weight: 600; text-decoration: none; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);">
                 <i class="fas fa-plus me-2"></i>Vender Producto
