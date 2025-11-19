@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class adminController extends Controller
 {
-    // ----- MOSTRAR PRODUCTOS -----
+    
 
     /**
      * Muestra todos los productos en el panel de administración
@@ -25,9 +25,9 @@ class adminController extends Controller
 
         return view('administrar/administrar', ['datosProductos' => $listaProductos]);
     }
-    // ----- FIN MOSTRAR PRODUCTOS -----
+ 
 
-    // ----- AÑADIR PRODUCTO -----
+
     
     /**
      * Muestra el formulario para crear un nuevo producto
@@ -139,8 +139,7 @@ class adminController extends Controller
 
         return redirect('/administrar');
     }
-    // ----- FIN AÑADIR PRODUCTO -----
-
+   
     // ----- BORRAR PRODUCTO -----
     
     /**
@@ -178,7 +177,7 @@ class adminController extends Controller
 
         return redirect('/administrar');
     }
-    // ----- FIN BORRAR PRODUCTO -----
+    
 
     // ----- EDITAR PRODUCTO -----
     
@@ -305,5 +304,5 @@ class adminController extends Controller
 
         return redirect('/administrar');
     }
-    // ----- FIN EDITAR PRODUCTO -----
+
 }
