@@ -342,23 +342,18 @@ Ruta: /carrito
                                 </td>
                                 {{-- === COLUMNA CANTIDAD === --}}
                                 <td>
-                                    {{-- Formulario para cambiar cantidad --}}
-                                    <form action="{{route('actualizarCantidad', $item->id)}}" method="POST" class="d-inline">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{$item->id}}">
-                                        {{-- Input numérico con valor actual --}}
-                                        <input type="number" name="cantidad" class="form-control quantity-input" 
-                                               value="{{$item->cantidad}}" min="1" style="width: 80px;">
-                                    </form>
+                                    {{-- Input numérico con valor actual --}}
+                                    <input type="number" name="cantidad_{{$item->id}}" id="cantidad_{{$item->id}}" class="form-control quantity-input" 
+                                           value="{{$item->cantidad}}" min="1" style="width: 80px;">
                                 </td>
                                 {{-- === COLUMNA ACCIONES === --}}
                                 <td>
                                     {{-- Botón Actualizar cantidad --}}
-                                    <form action="{{route('actualizarCantidad', $item->id)}}" method="POST" class="d-inline">
+                                    <form action="{{route('actualizarCantidad', $item->id)}}" method="POST" class="d-inline" id="form_actualizar_{{$item->id}}">
                                         @csrf
                                         <input type="hidden" name="id" value="{{$item->id}}">
-                                        <input type="hidden" name="cantidad" value="{{$item->cantidad}}">
-                                        <button class="btn btn-update" type="submit" title="Actualizar">
+                                        <input type="hidden" name="cantidad" id="hidden_cantidad_{{$item->id}}" value="{{$item->cantidad}}">
+                                        <button class="btn btn-update" type="button" onclick="actualizarCantidad({{$item->id}})" title="Actualizar">
                                             <i class="fas fa-sync-alt"></i>
                                         </button>
                                     </form>
@@ -424,5 +419,34 @@ Ruta: /carrito
         @endif
     </div>
 </section>
+
+{{-- === SCRIPT PARA ACTUALIZAR CANTIDADES === --}}
+<script>
+/**
+ * Función: actualizarCantidad
+ * 
+ * Propósito: Sincronizar el valor del input de cantidad con el campo hidden
+ * antes de enviar el formulario de actualización.
+ * 
+ * @param {int} itemId - ID del item en el carrito
+ * 
+ * Funcionamiento:
+ * 1. Lee el valor del input visible (cantidad_X)
+ * 2. Copia ese valor al campo hidden del formulario (hidden_cantidad_X)
+ * 3. Envía el formulario (form_actualizar_X)
+ */
+function actualizarCantidad(itemId) {
+    // Obtiene el valor actual del input de cantidad
+    const cantidadInput = document.getElementById('cantidad_' + itemId);
+    const nuevaCantidad = cantidadInput.value;
+    
+    // Actualiza el campo hidden con el nuevo valor
+    const hiddenCantidad = document.getElementById('hidden_cantidad_' + itemId);
+    hiddenCantidad.value = nuevaCantidad;
+    
+    // Envía el formulario
+    document.getElementById('form_actualizar_' + itemId).submit();
+}
+</script>
 
 @endsection
