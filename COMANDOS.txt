@@ -1,0 +1,34 @@
+# Parar el servidor
+Ctrl+C
+
+# Iniciar el servidor nuevamente
+php artisan serve
+
+# Ver rutas disponibles
+php artisan route:list
+
+# Limpiar caché
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# BASE DE DATOS LIMPIA 
+1-CREAR BASE DE DATOS EN SQL proyecto_2daw MANUALMENTE o : php create_db.php
+2- php artisan migrate:fresh esto creará todas las tablas)
+3-php artisan db:seed Ejecutar todos los seeders para poblar la base de datos con datos de prueba
+4-php artisan migrate:status Verificar el estado final de las migraciones
+5- php artisan config:clear; php artisan cache:clear; php artisan route:clear; php artisan view:clear LIMPIAR TODO
+
+# Solo limpiar base de datos
+php artisan db:seed --class=LimpiarBaseDatos
+
+# Reploblar base de datos Ejecutar todos los seeders definidos en DatabaseSeeder
+php artisan db:seed
+
+
+Usuarios
+Admin: email: admin@test.com, password: password
+Usuario: email: user@test.com, password: password
+pepe rubendelafuente1980@gmail.com 12345678
+
+
