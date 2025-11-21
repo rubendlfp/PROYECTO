@@ -29,7 +29,7 @@ Ruta: route('principal')
         {{-- Encabezado de la sección --}}
         <div class="row mb-5">
             <div class="col-12 text-center">
-                <h2 class="display-5 fw-bold mb-3">Nuestras Categorías</h2>
+                <h2 class="display-5 fw-bold mb-3">WALLADEPOR</h2>
                 <p class="lead text-muted">Explora nuestra amplia gama de productos organizados por categorías</p>
             </div>
         </div>
