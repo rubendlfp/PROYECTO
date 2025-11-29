@@ -70,7 +70,9 @@ DB_DATABASE=/var/www/html/database/database.sqlite" > .env
 RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "Ejecutando migraciones..."\n\
-php artisan migrate:fresh --force --seed\n\
+php artisan migrate:fresh --force\n\
+echo "Ejecutando seeders..."\n\
+php artisan db:seed --force || echo "Seeders fallaron, continuando..."\n\
 echo "Optimizando aplicación..."\n\
 php artisan config:cache\n\
 php artisan route:cache\n\
