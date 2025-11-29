@@ -430,24 +430,34 @@ Ruta: route('mostrarProductoUnico', ['id' => $producto->id])
                         
                         {{-- === FORMULARIOS DE ACCIÓN === --}}
                         <div class="d-flex flex-wrap gap-3">
-                            {{-- Formulario 1: Añadir al carrito (con AJAX) --}}
-                            <form action="{{ route('guardarProductoCarrito') }}" method="POST" class="d-inline add-to-cart-form">
-                                @csrf
-                                {{-- Campo oculto con ID del producto --}}
-                                <input type="hidden" name="id_producto" value="{{ $producto->id }}">
-                                <button class="btn btn-add-cart" type="submit">
-                                    <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
-                                </button>
-                            </form>
+                            @auth
+                                {{-- Formulario 1: Añadir al carrito (con AJAX) - Solo usuarios autenticados --}}
+                                <form action="{{ route('guardarProductoCarrito') }}" method="POST" class="d-inline add-to-cart-form">
+                                    @csrf
+                                    {{-- Campo oculto con ID del producto --}}
+                                    <input type="hidden" name="id_producto" value="{{ $producto->id }}">
+                                    <button class="btn btn-add-cart" type="submit">
+                                        <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
+                                    </button>
+                                </form>
 
-                            {{-- Formulario 2: Añadir a favoritos --}}
-                            <form action="{{ route('añadirFavorito') }}" method="POST" class="d-inline">
-                                @csrf
-                                <input type="hidden" name="id_producto" value="{{ $producto->id }}">
-                                <button class="btn btn-add-favorite" type="submit">
-                                    <i class="fas fa-heart me-2"></i>Favoritos
-                                </button>
-                            </form>
+                                {{-- Formulario 2: Añadir a favoritos --}}
+                                <form action="{{ route('añadirFavorito') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="id_producto" value="{{ $producto->id }}">
+                                    <button class="btn btn-add-favorite" type="submit">
+                                        <i class="fas fa-heart me-2"></i>Favoritos
+                                    </button>
+                                </form>
+                            @else
+                                {{-- Mensaje para usuarios no autenticados --}}
+                                <a href="{{ route('login') }}" class="btn btn-add-cart">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Inicia sesión para comprar
+                                </a>
+                                <a href="{{ route('register') }}" class="btn btn-add-favorite">
+                                    <i class="fas fa-user-plus me-2"></i>Crear cuenta
+                                </a>
+                            @endauth
                         </div>
                         
                         {{-- === SECCIÓN DE BENEFICIOS === --}}
