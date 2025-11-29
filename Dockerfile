@@ -69,6 +69,11 @@ DB_DATABASE=/var/www/html/database/database.sqlite" > .env
 # Script de inicio
 RUN echo '#!/bin/bash\n\
 set -e\n\
+echo "Limpiando cache..."\n\
+php artisan cache:clear\n\
+php artisan config:clear\n\
+php artisan route:clear\n\
+php artisan view:clear\n\
 echo "Ejecutando migraciones..."\n\
 php artisan migrate:fresh --force\n\
 echo "Ejecutando seeders..."\n\
