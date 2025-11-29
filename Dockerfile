@@ -80,7 +80,7 @@ php artisan view:clear\n\
 echo "Ejecutando migraciones..."\n\
 php artisan migrate:fresh --force\n\
 echo "Ejecutando seeders..."\n\
-php artisan db:seed --force || echo "Seeders fallaron, continuando..."\n\
+php artisan db:seed --force\n\
 echo "Optimizando aplicación..."\n\
 php artisan config:cache\n\
 php artisan route:cache\n\
