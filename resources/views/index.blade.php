@@ -143,7 +143,7 @@ Funcionalidad: Navegación principal, menú de administrador, contador de carrit
                                 @auth
                                     @php
                                         // Calcula la suma total de cantidades en el carrito del usuario
-                                        $totalCarrito = \App\Models\carritoCompra::where('id_user', auth()->id())->sum('cantidad');
+                                        $totalCarrito = \App\Models\CarritoCompra::where('id_user', auth()->id())->sum('cantidad');
                                     @endphp
                                     @if($totalCarrito > 0)
                                         {{-- Badge rojo con número de productos --}}
