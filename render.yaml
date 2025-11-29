@@ -5,35 +5,17 @@ services:
     plan: free
     branch: main
     envVars:
+      - key: APP_NAME
+        value: Laravel
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
+      - key: APP_URL
+        value: https://proyecto-1-wobq.onrender.com
       - key: APP_KEY
-        generateValue: true
+        value: base64:oSh+YTk/oBPTUHDtLXfCYoq1xJlLTfy6wqF06+imV0k=
       - key: DB_CONNECTION
-        value: mysql
-      - key: DB_HOST
-        fromDatabase:
-          name: proyecto-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: proyecto-db
-          property: port
+        value: sqlite
       - key: DB_DATABASE
-        fromDatabase:
-          name: proyecto-db
-          property: database
-      - key: DB_USERNAME
-        fromDatabase:
-          name: proyecto-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: proyecto-db
-          property: password
-
-databases:
-  - name: proyecto-db
-    plan: free
+        value: /var/www/html/database/database.sqlite

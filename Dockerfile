@@ -33,9 +33,12 @@ RUN composer install --ignore-platform-reqs --optimize-autoloader --no-dev
 # Crear directorios necesarios y configurar permisos
 RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p bootstrap/cache \
+    && mkdir -p database \
+    && touch database/database.sqlite \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+    && chmod -R 755 /var/www/html/bootstrap/cache \
+    && chmod 664 database/database.sqlite
 
 # Configurar Nginx
 RUN echo 'server {\n\
@@ -53,11 +56,21 @@ RUN echo 'server {\n\
     }\n\
 }' > /etc/nginx/sites-available/default
 
+# Crear archivo .env base
+RUN cp .env.example .env || echo "APP_NAME=Laravel\nAPP_ENV=production\nAPP_DEBUG=false\nAPP_URL=\nDB_CONNECTION=mysql" > .env
+
 # Script de inicio
 RUN echo '#!/bin/bash\n\
 set -e\n\
-php artisan key:generate --force || true\n\
-php artisan migrate --force || true\n\
+echo "Generando APP_KEY..."\n\
+php artisan key:generate --force\n\
+echo "Esperando base de datos..."\n\
+sleep 5\n\
+if php artisan migrate --force 2>/dev/null; then\n\
+    echo "Migraciones ejecutadas"\n\
+else\n\
+    echo "No se pudo conectar a la BD o ya están ejecutadas"\n\
+fi\n\
 php artisan config:cache\n\
 php artisan route:cache\n\
 php artisan view:cache\n\
