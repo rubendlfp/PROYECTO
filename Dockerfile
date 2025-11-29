@@ -77,6 +77,8 @@ php artisan cache:clear\n\
 php artisan config:clear\n\
 php artisan route:clear\n\
 php artisan view:clear\n\
+echo "Regenerando autoloader..."\n\
+composer dump-autoload --optimize --ignore-platform-reqs\n\
 echo "Ejecutando migraciones..."\n\
 php artisan migrate:fresh --force\n\
 echo "Ejecutando seeders..."\n\
