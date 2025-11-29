@@ -24,17 +24,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Configurar directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar archivos de composer primero (para cache)
-COPY composer.json composer.lock ./
-
-# Instalar dependencias de PHP
-RUN composer install --no-scripts --no-autoloader --prefer-dist --no-dev
-
 # Copiar el resto de la aplicación
 COPY . .
 
-# Completar instalación de composer
-RUN composer dump-autoload --optimize --no-dev
+# Instalar dependencias de PHP (ignorando requisitos de plataforma)
+RUN composer install --ignore-platform-reqs --optimize-autoloader --no-dev
 
 # Crear directorios necesarios y configurar permisos
 RUN mkdir -p storage/framework/{sessions,views,cache} \
