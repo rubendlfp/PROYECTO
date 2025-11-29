@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
@@ -31,7 +31,7 @@ COPY . .
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-dev
 
 # Generar autoload optimizado
-RUN composer dump-autoload --optimize
+RUN composer dump-autoload --optimize --ignore-platform-reqs
 
 # Crear directorios necesarios y configurar permisos
 RUN mkdir -p storage/framework/{sessions,views,cache} \
