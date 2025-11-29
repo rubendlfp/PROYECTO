@@ -30,6 +30,9 @@ COPY . .
 # Instalar dependencias de PHP (ignorando requisitos de plataforma)
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-dev
 
+# Generar autoload optimizado
+RUN composer dump-autoload --optimize
+
 # Crear directorios necesarios y configurar permisos
 RUN mkdir -p storage/framework/{sessions,views,cache} \
     && mkdir -p bootstrap/cache \
