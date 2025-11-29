@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             UserSeeder::class,
-            ProductoSeeder::class,
+            // ProductoSeeder::class, // Los productos se insertan en la migración
             CompraventaSeeder::class,
         ]);
     }
