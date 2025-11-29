@@ -31,4 +31,16 @@ Admin: email: admin@test.com, password: password
 Usuario: email: user@test.com, password: password
 pepe rubendelafuente1980@gmail.com 12345678
 
+PostgreSQL Conectar 
+-- Ver todas las tablas
+\dt
+
+-- Ver datos de usuarios
+SELECT * FROM users;
+
+-- Ver productos
+SELECT * FROM productos;
+
+-- Contar registros
+SELECT COUNT(*) FROM productos;
 
