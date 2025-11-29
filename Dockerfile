@@ -1,5 +1,6 @@
 FROM php:8.2-fpm
 
+# Build timestamp: 2025-11-29T17:00:00Z
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
