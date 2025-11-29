@@ -56,24 +56,26 @@ RUN echo 'server {\n\
     }\n\
 }' > /etc/nginx/sites-available/default
 
-# Crear archivo .env base
-RUN cp .env.example .env || echo "APP_NAME=Laravel\nAPP_ENV=production\nAPP_DEBUG=false\nAPP_URL=\nDB_CONNECTION=mysql" > .env
+# Crear archivo .env con valores por defecto
+RUN echo "APP_NAME=Laravel\n\
+APP_ENV=production\n\
+APP_KEY=base64:oSh+YTk/oBPTUHDtLXfCYoq1xJlLTfy6wqF06+imV0k=\n\
+APP_DEBUG=false\n\
+APP_URL=https://proyecto-1-wobq.onrender.com\n\
+LOG_CHANNEL=stderr\n\
+DB_CONNECTION=sqlite\n\
+DB_DATABASE=/var/www/html/database/database.sqlite" > .env
 
 # Script de inicio
 RUN echo '#!/bin/bash\n\
 set -e\n\
-echo "Generando APP_KEY..."\n\
-php artisan key:generate --force\n\
-echo "Esperando base de datos..."\n\
-sleep 5\n\
-if php artisan migrate --force 2>/dev/null; then\n\
-    echo "Migraciones ejecutadas"\n\
-else\n\
-    echo "No se pudo conectar a la BD o ya están ejecutadas"\n\
-fi\n\
+echo "Ejecutando migraciones..."\n\
+php artisan migrate:fresh --force --seed\n\
+echo "Optimizando aplicación..."\n\
 php artisan config:cache\n\
 php artisan route:cache\n\
 php artisan view:cache\n\
+echo "Iniciando servicios..."\n\
 php-fpm -D\n\
 nginx -g "daemon off;"' > /start.sh && chmod +x /start.sh
 
