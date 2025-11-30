@@ -1,6 +1,7 @@
 FROM php:8.2-fpm
 
-# Build timestamp: 2025-11-29T17:00:00Z
+# Build timestamp: 2025-11-30T10:00:00Z
+# Cache cleared - pedidosController removed
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
@@ -82,17 +83,20 @@ DB_DATABASE=/var/www/html/database/database.sqlite" > .env
 # Script de inicio
 RUN echo '#!/bin/bash\n\
 set -e\n\
-echo "Limpiando cache..."\n\
+echo "Limpiando cache y archivos compilados..."\n\
 php artisan cache:clear\n\
 php artisan config:clear\n\
 php artisan route:clear\n\
 php artisan view:clear\n\
+php artisan clear-compiled\n\
+rm -rf bootstrap/cache/*.php 2>/dev/null || true\n\
+rm -rf storage/framework/views/*.php 2>/dev/null || true\n\
 echo "Regenerando autoloader..."\n\
 composer dump-autoload --optimize --ignore-platform-reqs\n\
 echo "Ejecutando migraciones..."\n\
-php artisan migrate:fresh --force\n\
-echo "Ejecutando seeders..."\n\
-php artisan db:seed --force\n\
+php artisan migrate --force\n\
+echo "Ejecutando seeders si es necesario..."\n\
+php artisan db:seed --force || true\n\
 echo "Optimizando aplicación..."\n\
 php artisan config:cache\n\
 php artisan route:cache\n\
