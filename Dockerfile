@@ -19,6 +19,12 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Instalar extensiones de PHP
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
+# Configurar límites de PHP para subida de archivos
+RUN echo "upload_max_filesize = 50M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini
+
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -45,10 +51,12 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && chmod 664 database/database.sqlite
 
 # Configurar Nginx
-RUN echo 'server {\n\
+RUN echo 'client_max_body_size 50M;\n\
+server {\n\
     listen 8080;\n\
     root /var/www/html/public;\n\
     index index.php;\n\
+    client_max_body_size 50M;\n\
     location / {\n\
         try_files $uri $uri/ /index.php?$query_string;\n\
     }\n\
@@ -57,6 +65,7 @@ RUN echo 'server {\n\
         fastcgi_index index.php;\n\
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;\n\
         include fastcgi_params;\n\
+        fastcgi_read_timeout 300;\n\
     }\n\
 }' > /etc/nginx/sites-available/default
 
