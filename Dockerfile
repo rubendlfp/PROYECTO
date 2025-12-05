@@ -83,27 +83,18 @@ DB_DATABASE=/var/www/html/database/database.sqlite" > .env
 # Script de inicio
 RUN echo '#!/bin/bash\n\
 set -e\n\
-echo "Limpiando cache y archivos compilados..."\n\
-php artisan cache:clear\n\
-php artisan config:clear\n\
-php artisan route:clear\n\
-php artisan view:clear\n\
-php artisan clear-compiled\n\
-rm -rf bootstrap/cache/*.php 2>/dev/null || true\n\
-rm -rf storage/framework/views/*.php 2>/dev/null || true\n\
-echo "Regenerando autoloader..."\n\
-composer dump-autoload --optimize --ignore-platform-reqs\n\
-echo "Ejecutando migraciones..."\n\
-php artisan migrate --force\n\
-echo "Ejecutando seeders si es necesario..."\n\
-php artisan db:seed --force || true\n\
-echo "Optimizando aplicación..."\n\
-php artisan config:cache\n\
-php artisan route:cache\n\
-php artisan view:cache\n\
 echo "Iniciando servicios..."\n\
 php-fpm -D\n\
-nginx -g "daemon off;"' > /start.sh && chmod +x /start.sh
+exec nginx -g "daemon off;"' > /start.sh && chmod +x /start.sh
+
+# Ejecutar optimizaciones durante el build
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+# Ejecutar migraciones durante el build
+RUN php artisan migrate --force \
+    && php artisan db:seed --force || true
 
 EXPOSE 8080
 
