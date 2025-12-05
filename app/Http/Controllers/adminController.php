@@ -149,33 +149,59 @@ class adminController extends Controller
     {
         // Busca el producto
         $producto = Producto::find($id);
+        
+        if (!$producto) {
+            return redirect('/administrar')->with('error', 'Producto no encontrado');
+        }
+
+        // IMPORTANTE: Guarda las rutas ANTES de eliminar el producto
+        $imagen = $producto->imagen;
+        $img2 = $producto->img2;
+        $img3 = $producto->img3;
+        $img4 = $producto->img4;
+
+        // Elimina el producto de la base de datos
         $producto->delete();
 
-        // Elimina la imagen principal del servidor
-        $ruta_img = public_path($producto->imagen);
-        if ($ruta_img) {
-            unlink($ruta_img);
+        // Elimina la imagen principal si no es la default
+        if ($imagen && $imagen != 'img/productos/default.jpg') {
+            $ruta_img = public_path($imagen);
+            if (file_exists($ruta_img)) {
+                unlink($ruta_img);
+            }
         }
 
-        // Elimina imagen 2
-        $ruta_img2 = public_path($producto->img2);
-        if ($ruta_img2) {
-            unlink($ruta_img2);
+        // Elimina imagen 2 si no es la default
+        if ($img2 && $img2 != 'img/productos/default.jpg') {
+            $ruta_img2 = public_path($img2);
+            if (file_exists($ruta_img2)) {
+                unlink($ruta_img2);
+            }
         }
 
-        // Elimina imagen 3
-        $ruta_img3 = public_path($producto->img3);
-        if ($ruta_img3) {
-            unlink($ruta_img3);
+        // Elimina imagen 3 si no es la default
+        if ($img3 && $img3 != 'img/productos/default.jpg') {
+            $ruta_img3 = public_path($img3);
+            if (file_exists($ruta_img3)) {
+                unlink($ruta_img3);
+            }
         }
 
-        // Elimina imagen 4
-        $ruta_img4 = public_path($producto->img4);
-        if ($ruta_img4) {
-            unlink($ruta_img4);
+        // Elimina imagen 4 si no es la default
+        if ($img4 && $img4 != 'img/productos/default.jpg') {
+            $ruta_img4 = public_path($img4);
+            if (file_exists($ruta_img4)) {
+                unlink($ruta_img4);
+            }
         }
 
-        return redirect('/administrar');
+        // Intenta eliminar el directorio si está vacío
+        $directorio = public_path('img/productos/' . $id);
+        if (file_exists($directorio) && is_dir($directorio)) {
+            @rmdir($directorio); // @ suprime warnings si el directorio no está vacío
+        }
+
+        return redirect('/administrar')->with('success', 'Producto eliminado correctamente');
     }
     
 
